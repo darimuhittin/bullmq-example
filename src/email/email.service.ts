@@ -1,17 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { EmailQueue } from '../redis/bullmq.provider';
-
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 @Injectable()
 export class EmailService {
+  constructor(@InjectQueue('email') private readonly emailQueue: Queue) {}
+
   async sendWelcomeEmail(to: string) {
-    await EmailQueue.add(
-      'sendEmail',
-      { to },
-      {
-        attempts: 3,
-        backoff: { type: 'exponential', delay: 3000 },
-        removeOnComplete: true,
-      },
-    );
+    await this.emailQueue.add('sendEmail', { to });
   }
 }
