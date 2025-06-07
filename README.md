@@ -1,5 +1,6 @@
-# A nestjs project using:
+# A nestjs microservices project using:
 
+- Redis & PubSub for communication between services
 - BullMQ & Redis for queueing
 - BullBoard for monitoring
 
